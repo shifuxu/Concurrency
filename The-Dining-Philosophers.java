@@ -30,7 +30,7 @@ class DiningPhilosophers {
         // needs to acquire two locks to start eating
         Boolean gotLock = tryLock(philosopher);
         while (!gotLock) {
-            Thread.sleep(0);
+            Thread.sleep(10);
             gotLock = tryLock(philosopher);
         }
 
