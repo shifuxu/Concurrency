@@ -13,61 +13,77 @@ class FizzBuzz {
 
     // printFizz.run() outputs "fizz".
     public void fizz(Runnable printFizz) throws InterruptedException {
-        lock.lock();
-        while (counter <= n) {
-            if (counter % 3 != 0 || counter % 5 == 0) {
-                conditionMet.await();
-                continue;
+        try {
+            lock.lock();
+            while (counter <= n) {
+                if (counter % 3 != 0 || counter % 5 == 0) {
+                    conditionMet.await();
+                    continue; // this is key point, after count increased, need to check again.
+                }
+
+                printFizz.run();
+                counter++;
+                conditionMet.signalAll();
             }
-            printFizz.run();
-            counter++;
-            conditionMet.signalAll();
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 
     // printBuzz.run() outputs "buzz".
     public void buzz(Runnable printBuzz) throws InterruptedException {
-        lock.lock();
-        while (counter <= n) {
-            if (counter % 5 != 0 || counter % 3 == 0) {
-                conditionMet.await();
-                continue;
+        try {
+            lock.lock();
+            while (counter <= n) {
+                if (counter % 3 == 0 || counter % 5 != 0) {
+                    conditionMet.await();
+                    continue; // this is key point, after count increased, need to check again.
+                }
+
+                printBuzz.run();
+                counter++;
+                conditionMet.signalAll();
             }
-            printBuzz.run();
-            counter++;
-            conditionMet.signalAll();
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 
     // printFizzBuzz.run() outputs "fizzbuzz".
     public void fizzbuzz(Runnable printFizzBuzz) throws InterruptedException {
-        lock.lock();
-        while (counter <= n) {
-            if (counter % 15 != 0) {
-                conditionMet.await();
-                continue;
+        try {
+            lock.lock();
+            while (counter <= n) {
+                if (counter % 3 != 0 || counter % 5 != 0) {
+                    conditionMet.await();
+                    continue; // this is key point, after count increased, need to check again.
+                }
+
+                printFizzBuzz.run();
+                counter++;
+                conditionMet.signalAll();
             }
-            printFizzBuzz.run();
-            counter++;
-            conditionMet.signalAll();
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 
     // printNumber.accept(x) outputs "x", where x is an integer.
     public void number(IntConsumer printNumber) throws InterruptedException {
-        lock.lock();
-        while (counter <= n) {
-            if (counter % 3 == 0 || counter % 5 == 0) {
-                conditionMet.await();
-                continue;
-            }
+        try {
+            lock.lock();
+            while (counter <= n) {
+                if (counter % 3 == 0 || counter % 5 == 0) {
+                    conditionMet.await();
+                    continue; // this is key point, after count increased, need to check again.
+                }
 
-            printNumber.accept(counter++);
-            conditionMet.signalAll();
+                printNumber.accept(counter);
+                counter++;
+                conditionMet.signalAll();
+            }
+        } finally {
+            lock.unlock();
         }
-        lock.unlock();
     }
 }
