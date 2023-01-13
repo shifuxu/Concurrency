@@ -14,7 +14,7 @@ class FooBar {
         
         for (int i = 0; i < n; i++) {
             lock.lock();
-            while (!changeToFoo) {
+            if (!changeToFoo) {
                 conditionFoo.await();
             }
         	// printFoo.run() outputs "foo". Do not change or remove this line.
@@ -30,7 +30,7 @@ class FooBar {
         
         for (int i = 0; i < n; i++) {
             lock.lock();
-            while (!changeToBar) {
+            if (!changeToBar) {
                 conditionBar.await();
             }
             // printBar.run() outputs "bar". Do not change or remove this line.
