@@ -25,7 +25,7 @@ class Foo {
 
     public void second(Runnable printSecond) throws InterruptedException {
         lock.lock();
-        while (!oneDone) { // use this boolean incase first thread finished first, this case, we are not rely on await to wake up
+        if (!oneDone) { // use this boolean incase first thread finished first, this case, we are not rely on await to wake up
             conditionOne.await();
         }
         // printSecond.run() outputs "second". Do not change or remove this line.
@@ -37,7 +37,7 @@ class Foo {
 
     public void third(Runnable printThird) throws InterruptedException {
         lock.lock();
-        while (!twoDone) {
+        if (!twoDone) {
             conditionTwo.await();
         }
         // printThird.run() outputs "third". Do not change or remove this line.
