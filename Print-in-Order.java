@@ -25,7 +25,7 @@ class Foo {
 
     public void second(Runnable printSecond) throws InterruptedException {
         lock.lock();
-        while (!oneDone) {
+        while (!oneDone) { // use this boolean incase first thread finished first, this case, we are not rely on await to wake up
             conditionOne.await();
         }
         // printSecond.run() outputs "second". Do not change or remove this line.
