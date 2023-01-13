@@ -10,7 +10,7 @@ class H2O {
     }
 
     public void hydrogen(Runnable releaseHydrogen) throws InterruptedException {
-		hSem.acquire();
+	hSem.acquire();
         hCount.incrementAndGet();
         // releaseHydrogen.run() outputs "H". Do not change or remove this line.
         releaseHydrogen.run();
@@ -22,11 +22,11 @@ class H2O {
     public void oxygen(Runnable releaseOxygen) throws InterruptedException {
         oSem.acquire();
         // releaseOxygen.run() outputs "O". Do not change or remove this line.
-		releaseOxygen.run();
+	releaseOxygen.run();
         if (hCount.get() == 2) {
             hCount.decrementAndGet();
             hCount.decrementAndGet();
-            hSem.release(2);
+            hSem.release(2); // order here matters, because of happens before principle
         }
     }
 }
